@@ -8,12 +8,13 @@ import (
 type Player struct {
 	Health  int
 	Room    *Room
-	HasItem bool
+	HasPotion bool
 }
 
 type Room struct {
 	Description string
 	Item        *Item
+	Enemy        *Enemy
 	Exits       map[string]*Room
 }
 
@@ -23,8 +24,14 @@ type Game struct {
 }
 
 type Item struct {
-	Name        string
+	Name string
 	HealthBoost int
+}
+
+type Enemy struct {
+	Health int
+	Attack int
+	Name string
 }
 
 func (p *Player) Move(direction string) {
@@ -32,20 +39,30 @@ func (p *Player) Move(direction string) {
 		p.Room = newRoom
 		fmt.Println(p.Room.Description)
 		if p.Room.Item != nil {
-			fmt.Printf("\nYou found a %s! Your health has increased by %d points.", p.Room.Item.Name, p.Room.Item.HealthBoost)
-			p.HasItem = true
+			fmt.Printf("You found a %s! Your health has increased by %d points.", p.Room.Item.Name, p.Room.Item.HealthBoost)
+			p.HasPotion = true
 			p.Health += p.Room.Item.HealthBoost
 			p.Room.Item = nil
 		}
+		if p.Room.Enemy != nil {
+			fmt.Printf("You've encountered a %s! It attacks you for %d damage.", p.Room.Enemy.Name, p.Room.Enemy.Attack)
+			p.Room.Enemy.Health -= p.Room.Enemy.Attack
+			if p.Room.Enemy.Health <= 0 {
+				fmt.Println("You defeated the enemy!")
+				p.Room.Enemy = nil
+			}
+		}
 	} else {
-		fmt.Println("You can't go that way.\n")
+		fmt.Println("You can't go that way.")
 	}
 }
 
 func main() {
-	room1 := &Room{Description: "\nYou're in a dark room. There's an exit to the north.", Exits: make(map[string]*Room)}
-	room2 := &Room{Description: "\nYou've entered a brightly lit room. Exits are to the south and east.", Exits: make(map[string]*Room)}
-	room3 := &Room{Description: "\nThis room looks ominous. There's an exit to the west.", Item: &Item{Name: "Healing Potion", HealthBoost: 50}, Exits: make(map[string]*Room)}
+	room1 := &Room{Description: "You're in a dark room. There's an exit to the north.", Exits: make(map[string]*Room)}
+	room2 := &Room{Description: "You've entered a brightly lit room. Exits are to the south and east.",
+					Item: &Item{Name: "Healing Potion", HealthBoost: 50}, Exits: make(map[string]*Room)}
+	room3 := &Room{Description: "This room looks ominous. There's an exit to the west.", 
+					Enemy: &Enemy{Name: "Goblin", Health: 50, Attack: 20}, Exits: make(map[string]*Room)}
 
 	room1.Exits["north"] = room2
 	room2.Exits["south"] = room1
@@ -67,14 +84,14 @@ func main() {
 		case "north", "south", "east", "west":
 			game.Player.Move(cmd)
 		default:
-			fmt.Println("That is not a valid direction.\n")
+			fmt.Println("That is not a valid direction.")
 		}
 
-		if game.Player.HasItem {
-			fmt.Println("You have the item and made it out of the room! Congrats, you've won!\n")
+		if game.Player.HasPotion {
+			fmt.Println("You have the magic potion and made it out of the room! Congrats, you've won!")
 			break
 		}
 
-		fmt.Printf("Your current health is: %d", game.Player.Health, "\n")
+		fmt.Printf("Your current health is: %d", game.Player.Health)
 	}
 }
