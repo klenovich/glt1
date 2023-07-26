@@ -55,12 +55,41 @@ func (p *Player) Move(direction string) {
 			
 			if p.Room.Enemy.Health <= 0 {
 				fmt.Println("You defeated the enemy!")
+				printVictoryASCII()
 				p.Room.Enemy = nil
 			}
 		}
 	} else {
 		fmt.Println("You can't go that way.")
 	}
+}
+
+func printIntroASCII() {
+	introASCII := `
+	_______   __     __  __        __    ______  __       _______ 
+	/       \ /  |   /  |/  |      /  |  /      \/  |     /       \
+	$$$$$$$  |$$ |   $$ |$$ |      $$ | /$$$$$$  $$ |     $$$$$$$  |
+	$$ |__$$ |$$ |   $$ |$$ |      $$ | $$ |  $$ |$$ |     $$ |__$$ |
+	$$    $$/ $$ |   $$ |$$ |      $$ | $$ |  $$ |$$ |     $$    $$/
+	$$$$$$$/  $$ |   $$ |$$ |      $$ | $$ |  $$ |$$ |     $$$$$$$/ 
+	$$ |      $$ |   $$ |$$ |_____ $$ | $$ \__$$ |$$ |     $$ |      
+	$$ |      $$ |   $$ |$$       |$$ | $$    $$/ $$ |     $$ |      
+	$$/       $$/    $$/ $$$$$$$$/ $$/   $$$$$$/  $$/      $$/       
+	                                                                
+	`
+	fmt.Println(introASCII)
+}
+
+func printVictoryASCII() {
+	victoryASCII := `
+	__     __   __     ______     ______     ______     ______     __  __    
+	/\ \  _ \ \ /\ \   /\  ___\   /\  __ \   /\  == \   /\  __ \   /\ \/ /    
+	\ \ \/ ".\ \\ \ \  \ \___  \  \ \  __ \  \ \  __<   \ \  __ \  \ \  _"-   
+	 \ \__/".~\_\\ \_\  \/\_____\  \ \_\ \_\  \ \_\ \_\  \ \_\ \_\  \ \_\ \_\ 
+	  \/_/   \/_/ \/_/   \/_____/   \/_/\/_/   \/_/ /_/   \/_/\/_/   \/_/\/_/ 
+	                                                                                      
+	`
+	fmt.Println(victoryASCII)
 }
 
 func main() {
@@ -80,6 +109,8 @@ func main() {
 		Rooms:  []*Room{room1, room2, room3},
 	}
 
+	printIntroASCII()
+	
 	for game.Player.Health > 0 {
 		var cmd string
 		fmt.Println("Enter a direction (north, south, east, west):")
@@ -96,6 +127,7 @@ func main() {
 		if game.Player.HasPotion {
 			gameWinColor := color.New(color.FgBlue).PrintfFunc()
 			gameWinColor("You have the magic potion and made it out of the room! Congrats, you've won!")
+			printVictoryASCII()
 			break
 		}
 
