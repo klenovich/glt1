@@ -18,6 +18,7 @@ type Room struct {
 	Enemy       *Enemy
 	Exits       map[string]*Room
 	IsLocked    bool
+	Image       string
 }
 
 type Item struct {
@@ -49,6 +50,7 @@ func (p *Player) Move(direction string) {
 
 		p.Room = newRoom
 		fmt.Println(p.Room.Description)
+		fmt.Println(p.Room.Image)
 		
 		if p.Room.Item != nil {
 			itemColor := color.New(color.FgGreen).PrintfFunc()
@@ -76,7 +78,8 @@ func (p *Player) Move(direction string) {
 				fmt.Println("You draw your sword and prepare to fight.")
 				p.Room.Enemy.Health -= p.Room.Enemy.Attack
 			} else {
-				fmt.Printf("It attacks you for %d damage.\n", p.Room.Enemy.Attack)
+				fmt.Printf("It attacks you for %d damage.
+", p.Room.Enemy.Attack)
 				p.Health -= p.Room.Enemy.Attack
 			}
 			
@@ -91,14 +94,50 @@ func (p *Player) Move(direction string) {
 }
 
 func main() {
-	room1 := &Room{Description: "You're in a dark room. There's an exit to the north.", Exits: make(map[string]*Room)}
+	room1 := &Room{Description: "You're in a dark room. There's an exit to the north.", 
+		Image:`
+	___________
+	|         |
+	|         |
+	|         |
+	|         |
+	|_________|`, 
+		Exits: make(map[string]*Room)}
 	room2 := &Room{Description: "You've entered a brightly lit room. Exits are to the south and east.",
+		Image:`
+	___________
+	|   __    |
+	|  |  |   |
+	|  |__|   |
+	|         |
+	|_________|`,
 		Item: &Item{Name: "Healing Potion", HealthBoost: 50}, Exits: make(map[string]*Room)}
 	room3 := &Room{Description: "This room looks ominous. There's an exit to the west.",
+		Image:`
+	___________
+	|         |
+	|  /\\     |
+	| /  \\    |
+	|/____\\   |
+	|_________|`,
 		Enemy: &Enemy{Name: "Goblin", Health: 50, Attack: 20}, Exits: make(map[string]*Room)}
 	room4 := &Room{Description: "It looks like a storage room. There's an exit to the west.",
+		Image:`
+	___________
+	|   _____ |
+	|  |     ||
+	|  |     ||
+	|  |_____||
+	|_________|`,
 		Item: &Item{Name: "Key", HealthBoost: 0}, IsLocked: true, Exits: make(map[string]*Room)}
 	room5 := &Room{Description: "This is a mighty messy room but you see a sword in the corner. Exits are to the east and south.",
+		Image:`
+	___________
+	|     |   |
+	|     |   |
+	|     |   |
+	|     /   |
+	|_________|`,
 		Item: &Item{Name: "Sword", HealthBoost: 0}, Exits: make(map[string]*Room)}
 	
 	room1.Exits["north"] = room2
