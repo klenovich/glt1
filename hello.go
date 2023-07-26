@@ -42,8 +42,7 @@ func (p *Player) Move(direction string) {
 		
 		if p.Room.Item != nil {
 			itemColor := color.New(color.FgGreen).PrintfFunc()
-			itemColor("You found a %s! Your health has increased by %d points.
-", p.Room.Item.Name, p.Room.Item.HealthBoost)
+			itemColor("You found a %s! Your health has increased by %d points.", p.Room.Item.Name, p.Room.Item.HealthBoost)
 			p.HasPotion = true
 			p.Health += p.Room.Item.HealthBoost
 			p.Room.Item = nil
@@ -51,8 +50,7 @@ func (p *Player) Move(direction string) {
 		
 		if p.Room.Enemy != nil {
 			enemyColor := color.New(color.FgRed).PrintfFunc()
-			enemyColor("You've encountered a %s! It attacks you for %d damage.
-", p.Room.Enemy.Name, p.Room.Enemy.Attack)
+			enemyColor("You've encountered a %s! It attacks you for %d damage.", p.Room.Enemy.Name, p.Room.Enemy.Attack)
 			p.Room.Enemy.Health -= p.Room.Enemy.Attack
 			
 			if p.Room.Enemy.Health <= 0 {
@@ -85,8 +83,7 @@ func main() {
 	for game.Player.Health > 0 {
 		var cmd string
 		fmt.Println("Enter a direction (north, south, east, west):")
-		fmt.Scanf("%s
-", &cmd)
+		fmt.Scanf("%s", &cmd)
 		cmd = strings.ToLower(cmd)
 
 		switch cmd {
@@ -98,13 +95,11 @@ func main() {
 
 		if game.Player.HasPotion {
 			gameWinColor := color.New(color.FgBlue).PrintfFunc()
-			gameWinColor("You have the magic potion and made it out of the room! Congrats, you've won!
-")
+			gameWinColor("You have the magic potion and made it out of the room! Congrats, you've won!")
 			break
 		}
 
 		playerHealthColor := color.New(color.FgYellow).PrintfFunc()
-		playerHealthColor("Your current health is: %d
-", game.Player.Health)
+		playerHealthColor("Your current health is: %d", game.Player.Health)
 	}
 }
