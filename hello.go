@@ -78,8 +78,7 @@ func (p *Player) Move(direction string) {
 				fmt.Println("You draw your sword and prepare to fight.")
 				p.Room.Enemy.Health -= p.Room.Enemy.Attack
 			} else {
-				fmt.Printf("It attacks you for %d damage.
-", p.Room.Enemy.Attack)
+				fmt.Printf("It attacks you for %d damage.\n", p.Room.Enemy.Attack)
 				p.Health -= p.Room.Enemy.Attack
 			}
 			
