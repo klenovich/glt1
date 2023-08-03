@@ -1,4 +1,4 @@
-module test
+module dg1
 
 go 1.20
 
