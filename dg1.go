@@ -1,14 +1,17 @@
 package main
 
+// GT9
+
 import (
 	"fmt"
-	"github.com/fatih/color"
 	"strings"
+
+	"github.com/fatih/color"
 )
 
 type Player struct {
-	Health  int
-	Room    *Room
+	Health                      int
+	Room                        *Room
 	HasPotion, HasKey, HasSword bool
 }
 
@@ -22,14 +25,14 @@ type Room struct {
 }
 
 type Item struct {
-	Name string
+	Name        string
 	HealthBoost int
 }
 
 type Enemy struct {
 	Health int
 	Attack int
-	Name string
+	Name   string
 }
 
 type Game struct {
@@ -51,7 +54,7 @@ func (p *Player) Move(direction string) {
 		p.Room = newRoom
 		fmt.Println(p.Room.Description)
 		fmt.Println(p.Room.Image)
-		
+
 		if p.Room.Item != nil {
 			itemColor := color.New(color.FgGreen).PrintfFunc()
 			itemColor("You found a %s!\n", p.Room.Item.Name)
@@ -81,7 +84,7 @@ func (p *Player) Move(direction string) {
 				fmt.Printf("It attacks you for %d damage.\n", p.Room.Enemy.Attack)
 				p.Health -= p.Room.Enemy.Attack
 			}
-			
+
 			if p.Room.Enemy.Health <= 0 {
 				fmt.Println("You defeated the enemy!")
 				p.Room.Enemy = nil
@@ -93,17 +96,17 @@ func (p *Player) Move(direction string) {
 }
 
 func main() {
-	room1 := &Room{Description: "You're in a dark room. There's an exit to the north.", 
-		Image:`
+	room1 := &Room{Description: "You're in a dark room. There's an exit to the north.",
+		Image: `
 	___________
 	|         |
 	|         |
 	|         |
 	|         |
-	|_________|`, 
+	|_________|`,
 		Exits: make(map[string]*Room)}
 	room2 := &Room{Description: "You've entered a brightly lit room. Exits are to the south and east.",
-		Image:`
+		Image: `
 	___________
 	|   __    |
 	|  |  |   |
@@ -112,7 +115,7 @@ func main() {
 	|_________|`,
 		Item: &Item{Name: "Healing Potion", HealthBoost: 50}, Exits: make(map[string]*Room)}
 	room3 := &Room{Description: "This room looks ominous. There's an exit to the west.",
-		Image:`
+		Image: `
 	___________
 	|         |
 	|  /\\     |
@@ -121,7 +124,7 @@ func main() {
 	|_________|`,
 		Enemy: &Enemy{Name: "Goblin", Health: 50, Attack: 20}, Exits: make(map[string]*Room)}
 	room4 := &Room{Description: "It looks like a storage room. There's an exit to the west.",
-		Image:`
+		Image: `
 	___________
 	|   _____ |
 	|  |     ||
@@ -130,7 +133,7 @@ func main() {
 	|_________|`,
 		Item: &Item{Name: "Key", HealthBoost: 0}, IsLocked: true, Exits: make(map[string]*Room)}
 	room5 := &Room{Description: "This is a mighty messy room but you see a sword in the corner. Exits are to the east and south.",
-		Image:`
+		Image: `
 	___________
 	|     |   |
 	|     |   |
@@ -138,7 +141,7 @@ func main() {
 	|     /   |
 	|_________|`,
 		Item: &Item{Name: "Sword", HealthBoost: 0}, Exits: make(map[string]*Room)}
-	
+
 	room1.Exits["north"] = room2
 	room2.Exits["south"] = room1
 	room2.Exits["east"] = room3
@@ -180,6 +183,6 @@ func main() {
 			gameWinColor("Congrats, you've collected all items and won the game!\n")
 			break
 		}
-	
+
 	}
 }
